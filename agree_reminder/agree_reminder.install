@@ -1,0 +1,43 @@
+<?php
+function agree_reminder_schema() {
+  $schema['register_data'] = array(
+    'description' => 'An example table.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The identifier of a form.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      
+      'uid' => array(
+        'description' => 'The identifier of a form.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'mail' => array(
+        'description' => 'The email of a form.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+        'date' => array(
+        'description' => 'date for the reminder',
+        'mysql_type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+              ),
+              
+	    'agree' => array(
+        'description' => 'Agree Condition',
+        'mysql_type' => 'BOOLEAN',
+        'not null' => TRUE,
+         //~ 'default' => 0,
+              ),
+            ),
+    
+      'primary key' => array('id','uid'),
+  );
+  return $schema;
+}

@@ -1,0 +1,12 @@
+name = Agree Reminder Module
+core = 7.x
+description = set reminder with Date & time field.
+
+stylesheets[all][] = css/wickedpicker.css
+stylesheets[all][] = css/jquery-ui.css
+stylesheets[all][] = css/agree_reminder.css
+stylesheets[all][] = css/datepicker.min.css
+
+scripts[] = js/wickedpicker.js
+scripts[] = js/agree_reminder.js
+

@@ -1,0 +1,273 @@
+<?php
+function agree_reminder_permission() {
+  return array(
+    'access agree_reminder content' => array(
+      'title' => t('Access content for the Agree reminder module'),
+    )
+  );
+}
+
+function agree_reminder_menu() {
+  
+  $items = array();
+  $items['reminder'] = array(
+    'title' => 'REMINDER TO ORDER',
+	'class' => 'reminder_title' ,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('agree_reminder_datetime_form'),
+    'access arguments' => array('access agree_reminder content'),
+  );
+  
+  $items['contract_payment'] = array(
+    'title' => 'CONTRACT PAYMENTS',
+	//~ 'class' => 'reminder_title' ,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('agree_reminder_contract_form'),
+    'access arguments' => array('access content'),
+  );
+   
+     $items['contract_payment_confirmation'] = array(
+    'title' => 'Contract Payment Confirmation',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('agree_reminder_contract_payment_form'),
+    'access arguments' => array('access content'),
+  );
+  
+  
+  //~ $items['operator-order-invoice/%commerce_order/print_invoice'] = array(
+    //~ 'title' => 'PrintInvoice',
+    //~ //'page callback' => 'commerce_payment_ui_order_tab',
+    //~ 'page arguments' => array(3),
+    //~ 'access callback' => 'commerce_payment_transaction_order_access',
+    //~ 'access arguments' => array('view', 3),
+    //~ 'type' => MENU_LOCAL_TASK,
+    //~ 'weight' => 10,
+    //~ 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    //~ 'file' => 'includes/commerce_payment_ui.admin.inc',
+  //~ );
+  return $items;
+}
+
+
+function agree_reminder_datetime_form($form, &$form_state) {
+	  
+	  global $base_url;
+	  global $language;
+  $lang_name = $language->language ;
+  if(arg(0) == 'reminder') { 
+  drupal_add_js($base_url.'/sites/all/modules/agree_reminder/js/datepicker.min.js');
+  drupal_add_js($base_url.'/sites/all/modules/agree_reminder/js/i18n/datepicker.en.js');
+
+  } 
+  
+   $agree_condition = array(
+   'agree' => t('I agree to receive stores Order reminder by email/sms the following date and time :'),
+   );
+    if($lang_name == 'zh-hans')
+{
+   
+ $form = array(
+		    '#prefix' => '<div class="reminder-wrapper"><div class="reminder-title"><h1>提醒訂單</h1></div>',
+		    '#suffix' => '</div>',
+	);}else{
+		 $form = array(
+		    '#prefix' => '<div class="reminder-wrapper"><div class="reminder-title"><h1>REMINDER TO ORDER</h1></div>',
+		    '#suffix' => '</div>',
+	);
+		} 
+	
+	
+	 
+ $form['agree'] = array(
+   '#type' => 'checkboxes',
+   '#options' => $agree_condition,
+   
+);
+  
+   
+   $form['date'] = array(
+   '#type' => 'textfield', 
+   '#id' => 'datepicker-here',
+   '#required' => TRUE,
+   '#attributes' => array('class' => array('datepicker-here')),
+   
+  );
+  
+  $form['time'] = array(
+   '#type' => 'textfield',
+   '#id' => 'timepickerA',
+    '#attributes' => array('class' => array('timepickerA')),
+    
+);
+
+ if($lang_name == 'zh-hans')
+{
+        $form['cancel'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="cancel"><a class="cancel-link" href="reminder">关闭</a></span>',
+	 	'#prefix' => '<div class="reminder-button-wrapper">',
+	  	 );}else{
+			 $form['cancel'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="cancel"><a class="cancel-link" href="reminder">Cancel</a></span>',
+	 	'#prefix' => '<div class="reminder-button-wrapper">',
+	  	 ); 
+			}
+
+
+     $form['submit_button'] = array(
+     '#type' => 'submit',
+     //~ '#attributes' => array('class' => array('submit_reminder')),
+     '#prefix' => '<div class="submit-wrapper">',
+	 '#suffix' => '</div></div>',
+     '#value' => t('Save'),
+    );
+    
+     
+   
+     $form['#submit_button'][] = 'agree_reminder_datetime_form_submit';
+  
+  
+  
+  return $form;
+}
+
+
+function agree_reminder_datetime_form_submit($form, &$form_state){
+     global $user;
+     
+     $mydate = $form_state['values']['date']; 
+     $mytime = str_replace(" ","",$form["time"]['#value']);
+    
+     $test1 =  strtotime($mydate);
+          
+     $test2 =  strtotime($mytime);
+     
+     $test_date = strtotime($mydate.''.$mytime);
+     
+     db_insert('register_data')
+     ->fields(array('uid' => $user->uid, 'mail' => $user->mail, 'date' => $test_date, 'agree' => 1))
+	 ->execute();
+		
+     drupal_set_message("The Order reminder date has been submitted ! ");
+	}
+
+
+//~ function agree_reminder_cron() {
+	//~ global $user;
+    //~ $current_date = date("Y-m-d H:i");
+    //~ $current_datetime =  strtotime($current_date);
+//~ 
+      //~ $result = db_select('register_data', 'rd')
+				//~ ->fields('rd', array('mail'))
+				//~ ->condition('date', $current_datetime, '=')
+				//~ ->execute()->fetchCol();
+		//~ $to_user_mail = $result;
+//~ 
+        //~ if($result){
+//~ 
+        //~ $module = 'agree_reminder';
+        //~ $key = 'MY_KEY';
+//~ 
+        //~ $from = 'webexpertz.ntf@gmail.com';
+        //~ 
+		//~ $message = drupal_mail($module, $key, $to_user_mail, LANGUAGE_NONE, array(), $from, FALSE);
+//~ 
+        //~ $message['headers']['Cc'] = 'cc_email@test.com';
+        //~ $message['headers']['Reply-To'] = 'reply_to_email@test.com';
+//~ 
+        //~ $message['subject'] = 'THE SUBJECT';
+//~ 
+        //~ $message['body'] = array();
+        //~ $message['body'][] = 'Dears' ;
+        //~ $message['body'][] = '...';
+        //~ $message['body'][] = 'Regards,';
+        //~ $message['body'][] = 'YOUR NAME';
+//~ 
+         //~ $system = drupal_mail_system($module, $key);
+      //~ 
+         //~ $message = $system->format($message);
+         //~ $message['result'] = $system->mail($message);
+         //~ 
+          //~ drupal_set_message(t("Mail has been send succesfully"),'status');
+//~ }else{
+	 //~ 
+	 //~ drupal_set_message(t("Unable to send e-mail. Contact the site administrator if the problem persists."), 'error');
+	 //~ 
+	 //~ 
+	//~ 
+	//~ }
+//~ 
+//~ }
+
+
+function agree_reminder_contract_form($form, &$form_state){
+	global $user;
+	
+	if($user->uid != 0){
+		$mrk_value = '<span class="contract_Payment_btn ctrt_Pymnt_btn"><a class="colorbox-node" href="/contract_payment_confirmation?width=400&height=500">Contract Payment</a></span>';
+	}
+	else{
+		$mrk_value = '<span class="contract_Payment_btn ctrt_Pymnt_btn"><a href="/user/login?destination=contract_payment_confirmation">Contract Payment</a></span>';
+	}
+		$form = array(
+		'#prefix' => '<div class="contract-wrapper"><div class="reminder-title"><h1>PAYMENT</h1></div>',
+		'#suffix' => '</div>',
+	); 
+	
+	$form['contract_Payment_btn'] = array(
+		'#type' => 'markup',
+		'#markup' => $mrk_value,
+	);
+	
+	$form['pay_now_btn'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="pay_now_btn ctrt_Pymnt_btn"><a href="/checkout">PayNow</a></span>',
+	);
+	 	
+	return $form;
+}
+	
+function agree_reminder_contract_payment_form($form, &$form_state) {
+	
+	$form = array(); 
+	
+	$form['contract_notice'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="contract_notice_text"><p>Based on your contract Ocean Fleet will charge a late fee of 15% on any ammount not paid when due.</p></span>',
+	);
+	
+	$form['want_to_paynow_btn'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="confirmation_contract_btn want_to_paynow_btn"><a href="#">No, I want to Pay Now</a></span>',
+	);
+	
+	$form['choose_contract_payment_btn'] = array(
+		'#type' => 'markup',
+		'#markup' => '<span class="confirmation_contract_btn choose_contract_payment_btn"><a href="#">Yes, I choose Contract Payment</a></span>',
+	); 
+
+  return $form;
+}
+
+
+//~ function agree_reminder_menu_link_alter(&$item) {
+ //~ 
+   //~ 
+     //~ if ($item['mlid'] == '3072') {
+     //~ $item['options']['alter'] = TRUE;
+     //~ }
+       //~ if ($item['mlid'] == '3073') {
+      //~ $item['options']['alter'] = TRUE;
+     //~ }
+//~ }
+//~ function agree_reminder_translated_menu_link_alter(&$item) {
+	//~ global $user;
+//~ 
+     //~ if ($item['mlid'] == '3072') {
+    //~ $item['href'] = 'user/'.$user->uid.'/edit';
+  //~ }
+   //~ if ($item['mlid'] == '3073') {
+    //~ $item['href'] = 'user/'.$user->uid.'/my-delivery-address';
+  //~ }
+//~ }

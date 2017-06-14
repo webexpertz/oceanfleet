@@ -1,0 +1,133 @@
+.contract-wrapper .ctrt_Pymnt_btn a {
+    background-color: #014f8d;
+    color: #ffffff;
+    padding: 7px 20px;
+    margin:10px 0px 10px 18px;
+	display:block;
+	width:45%;
+	float:left;
+	text-align:center;
+}
+
+.contract-wrapper .ctrt_Pymnt_btn a:hover {
+    background-color: rgba(1, 79, 141, 0.9);
+    color: #ffffff;
+}
+
+.contract-wrapper .pay_now_btn.ctrt_Pymnt_btn a:hover {
+    background: #ffffff ;
+    border: 1px solid;
+    color: #6fb523;
+}
+
+.contract-wrapper .pay_now_btn.ctrt_Pymnt_btn a {
+    background: #6fb523 ;
+
+}
+
+.contract_Payment_btn.ctrt_Pymnt_btn a {
+    background: #ffffff;
+    border: 1px solid #014f8d;
+    color: #014f8d;
+}
+
+.contract-wrapper {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    max-width: 520px;
+	margin:auto;
+}
+
+.contract-wrapper .reminder-title{ margin-bottom:10px;}
+.contract-wrapper .reminder-title h1{ text-align:left; padding-left:15px;}
+
+.page-reminder .datepicker {
+    margin-top: -20px !important;
+}
+
+.page-reminder .wickedpicker {
+    margin-top: 0px !important;
+}
+
+
+html body.admin-menu.page-reminder {
+    margin-top: 0 !important;
+}
+@media screen and (max-width: 430px) 
+{
+	
+.page-checkout form#commerce-checkout-form-checkout fieldset.checkout-buttons button.checkout-continue
+{
+	 margin-top: -94px !important;
+	 max-width:130px;
+	 margin-left:160px !important;
+}
+
+.custom_contract_payment .contract_Payment_btn a{ max-width:130px;}
+.page-checkout form#commerce-checkout-form-checkout fieldset.checkout-buttons button.checkout-continue {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    border-radius:0;
+    border:none;
+}
+}
+/*-- commerce-checkout-form-checkout --*/
+.logged-in #commerce-checkout-form-checkout{
+    position: relative;
+}
+.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment{
+    border: medium none;
+    box-shadow: none;
+    float: left;
+    padding-top: 45px;
+	  min-width: 175px;
+}
+.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment .panel-heading{
+    border: 1px solid #ddd;
+    bottom: 98px;
+    position: absolute;
+    z-index: 1;
+}
+.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment + #edit-buttons{
+    padding-top: 44px;
+	position:relative;
+}
+.admin-menu.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment {
+    border: 1px solid #c0c0c0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    float: inherit;
+}
+.admin-menu.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment .panel-heading{
+	border-color: #ddd;
+    bottom: 0;
+    position: inherit;
+}
+.admin-menu.logged-in #commerce-checkout-form-checkout #edit-custom-contract-payment + #edit-buttons{
+    padding-top: 0;
+	position:inherit;
+} 
+.admin-menu form#commerce-checkout-form-checkout #edit-custom-contract-payment-newsletter + fieldset.checkout-buttons button.checkout-continue {
+    margin: 0 !important;
+}
+.checkout-continue.btn.btn-default {
+    border: medium none;
+}
+#edit-buttons .btn.btn-default {
+    border: medium none;
+    border-radius: 0;
+    padding: 7px 46px !important;
+} 
+ 
+.views-field.dispatch-link > a, .views-field.print-invoice-link > a {
+    background: #ff0000 none repeat scroll 0 0;
+    border-radius: 5px;
+    color: #ffffff;
+    display: block;
+    line-height: 16px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+
